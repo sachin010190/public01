@@ -4,7 +4,7 @@ import java.util.List;
 
 public class BerlinClockTest {
  
-	 public void getBerlinTime(String time) {
+	 public void convertTime(String time) {
 	    	int hhTimePart=Integer.parseInt(time.substring(0,2));
 	    	int mmTimePart=Integer.parseInt(time.substring(3,5));
 	    	int ssTimePart=Integer.parseInt(time.substring(6,8));
@@ -54,7 +54,7 @@ public class BerlinClockTest {
     }
 public static void main(String[] args) {
 		BerlinClockTest b=new BerlinClockTest();
-		b.getBerlinTime("23:33:33");
+		b.convertTime("23:33:33");
 	}
 
  
