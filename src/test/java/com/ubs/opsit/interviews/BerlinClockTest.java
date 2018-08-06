@@ -1,59 +1,61 @@
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class BerlinClockTest {
  
-    public String[] getBerlinTime(String time) {
-    	List<Integer> parts = new ArrayList<Integer>();
-    	for (String part : time.split(":")) {
-    	  parts.add(Integer.parseInt(part));
+	 public void getBerlinTime(String time) {
+	    	int hhTimePart=Integer.parseInt(time.substring(0,2));
+	    	int mmTimePart=Integer.parseInt(time.substring(3,5));
+	    	int ssTimePart=Integer.parseInt(time.substring(6,8));
+	                System.out.println(displaySS(ssTimePart));
+	                System.out.println(displayPrimaryHH(hhTimePart));
+	                System.out.println(displaySecondaryHH(hhTimePart));
+	                System.out.println(displayPrimaryMM(mmTimePart));
+	                System.out.println(displaySecondaryMM(mmTimePart));
+	    }
+	 
+ 
+    protected String displaySS(int ss) {
+    	if (ss%2== 0) 
+            return "Y";
+            else 
+            return "O";
+    }
+ 
+    String displayPrimaryHH(int hh){
+    	int tempHH=(hh-(hh%5))/5;
+    	return getLamps(4,"Y",tempHH);  	
+    }
+    
+    String displaySecondaryHH(int hh){
+    	int tempHH=hh%5;
+    	return getLamps(4,"Y",tempHH);    	
+    }
+    String displayPrimaryMM(int mm){
+    	String ss="";
+    	int tempHH=(mm-(mm%5))/5;
+    	ss=getLamps(11,"Y",tempHH);
+    	return ss.replace("YYY", "YYR");    	
+    }
+    String displaySecondaryMM(int mm){
+    	int tempHH=mm%5;
+    	return getLamps(4,"Y",tempHH);  	
+    }
+    String getLamps(int maxSign,String c,int onSign){
+    	String s="";
+    	for(int i=0;i<onSign;i++){
+    		s=s.concat(c);
     	}
-    	
-        return new String[] {
-                getSeconds(parts.get(2)),
-                getTopHours(parts.get(0)),
-                getBottomHours(parts.get(0)),
-                getTopMinutes(parts.get(1)),
-                getBottomMinutes(parts.get(1))
-        };
+    	for(int i=0;i<maxSign-onSign;i++){
+    		s=s.concat("O");
+    	}
+    	return s;
     }
+public static void main(String[] args) {
+		BerlinClockTest b=new BerlinClockTest();
+		b.getBerlinTime("23:33:33");
+	}
+
  
-    protected String getSeconds(int number) {
-        if (number % 2 == 0) return "Y";
-        else return "O";
-    }
- 
-    protected String getTopHours(int number) {
-        return getOnOff(4, getTopNumberOfOnSigns(number));
-    }
- 
-    protected String getBottomHours(int number) {
-        return getOnOff(4, number % 5);
-    }
- 
-    protected String getTopMinutes(int number) {
-        return getOnOff(11, getTopNumberOfOnSigns(number), "Y").replaceAll("YYY", "YYR");
-    }
- 
-    protected String getBottomMinutes(int number) {
-        return getOnOff(4, number % 5, "Y");
-    }
- 
-    private String getOnOff(int lamps, int onSigns) {
-        return getOnOff(lamps, onSigns, "R");
-    }
-    private String getOnOff(int lamps, int onSigns, String onSign) {
-        String out = "";
-        for (int i = 0; i < onSigns; i++) {
-            out += onSign;
-        }
-        for (int i = 0; i < (lamps - onSigns); i++) {
-            out += "O";
-        }
-        return out;
-    }
- 
-    private int getTopNumberOfOnSigns(int number) {
-        return (number - (number % 5)) / 5;
-    } 
 }
